@@ -31,6 +31,7 @@
     wget
     vim
     git
+    linuxPackages.wireguard
   ];
 
   services.openssh.enable = true;
@@ -53,6 +54,28 @@
           "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCg5FmxYTCUiGE3PwPNqbeDJ1Qare4nkg7VDoJc33q9rXnr1qEb883/ghN/aP0cFpBleXU9WQvnOfaj/uEMk2lJwqtgfhMlIJj5jT6X1A7DsAV72uu8404gyD2tlYE4H9iLvg6uZVVUNWz3jsb+RmOXdcub0I++oT1JqrD45MQHA0bR6CZSzKqbG9xbq7qpfYz+vbc5MFHu7lX++691TlZ9ZKYwPMZzHDz8qsxwAcWhcDF+fBALdmg4K1CNKkPy6y9SL/fGAun+21HiwS7AC4mb24VMX5dFtIx+Rj/WMheuTXFuV0fIw26dEdd1FD7lQaa9JZfvqKhc0OTN7ocr2Pex psuwala@MacBook-Pro-Piotr.local"
       ];
   };
+
+
+  users.users.critbit = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "docker" ];
+      openssh.authorizedKeys.keys = [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCebJpdjaPXKB2gscm6gvoVSLe+ci2Gd6xJiZpYy+37UkD9+wfJ46tXDRT7qNZnIGa20ySAt+vq+oWVe2RRtLo2hWYPieAfauawhhOVuXtjnN9cuJB3TtNcl7A8ZyvPwQbSxszdueXjUhYD/I5d082cx1eC4dzVM2pw33K2npUAlIXgM3WqBiMkgoL1eEnin7xlTIIu/7RaF4Thm2TNyGRQzRnWtXssgh0B9bd5FvPQ4Ywkbac9bR5gjUurPBP18Cy/oJGjrKs/JUALgxg9mD8F8U376b7Inxz3eKINtJZctEvzt2/Wz32PZORVGjNeGJ350BYXovi1zhqwO8gX1RZP vue95@Vue700"
+      ];
+  };
+
+  networking.wireguard.interfaces.wg0 = {
+      ips = [ "10.69.10.6/32" ];
+      peers = [ 
+        { 
+          allowedIPs = [ "10.69.0.0/16" ];
+          endpoint = "vpn.hs3.pl:58008";
+          publicKey = "5pnN3CIdsMFT1se6fm+FMasD2EPxAC9p+6mIQYj+nmo=";
+        } 
+      ];
+      privateKey = "kF31S/JSrwBGnuLLeZKfiqUwKp1xFMXMJYwEdJZqZlk="; 
+    }; 
+
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database

@@ -3,11 +3,14 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
+let
+  whichPkg = pkg: "${builtins.getAttr pkg pkgs}/bin/${pkg}";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./nomad.nix
       ./local.nix
     ];
 
@@ -29,6 +32,8 @@
   time.timeZone = "Europe/Warsaw";
 
   environment.systemPackages = with pkgs; [
+    consul
+    direnv
     wget
     vim
     git
@@ -65,6 +70,18 @@
       ];
   };
 
+  systemd.services.consul-dev = {
+      description = "Consul client and server";
+
+      serviceConfig = {
+         ExecStart = "${whichPkg "consul"} agent --dev --ui";
+         Restart = "on-failure";
+      };
+
+      wantedBy = [ "multi-user.target" ];
+  };
+
+  services.openssh.gatewayPorts = "yes";
   networking.wireguard.interfaces.wg0 = {
       ips = [ "10.69.10.6/32" ];
       peers = [ 

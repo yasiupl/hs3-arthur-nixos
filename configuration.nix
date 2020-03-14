@@ -72,9 +72,12 @@
           allowedIPs = [ "10.69.0.0/16" ];
           endpoint = "vpn.hs3.pl:58008";
           publicKey = "5pnN3CIdsMFT1se6fm+FMasD2EPxAC9p+6mIQYj+nmo=";
+          persistentKeepalive = 25;
         } 
       ];
     }; 
+
+
 
 
   # This value determines the NixOS release with which your system is to be

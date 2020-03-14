@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./local.nix
     ];
 
   boot.loader.grub.enable = true;
@@ -73,7 +74,6 @@
           publicKey = "5pnN3CIdsMFT1se6fm+FMasD2EPxAC9p+6mIQYj+nmo=";
         } 
       ];
-      privateKey = "kF31S/JSrwBGnuLLeZKfiqUwKp1xFMXMJYwEdJZqZlk="; 
     }; 
 
 

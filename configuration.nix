@@ -12,7 +12,7 @@ in
       ./hardware-configuration.nix
       ./nomad.nix
       ./local.nix
-      ./ping-hotfix.nix
+      ./services/systemd/ping-hotfix.nix
       ./users/users.nix
     ];
 

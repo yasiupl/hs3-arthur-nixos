@@ -10,9 +10,13 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nomad.nix
+      # Allows to run nomad containers + consul is graphical manager 
+      ./services/containers/nomad/nomad.nix
+      ./services/containers/nomad/consul.nix
+      # Wireguard Passes + Hotfix for dropping connection
       ./local.nix
       ./services/systemd/ping-hotfix.nix
+      # Users files 
       ./users/users.nix
     ];
 
@@ -43,18 +47,8 @@ in
   ];
 
   services.openssh.enable = true;
+  
   networking.firewall.enable = false;
-
-  systemd.services.consul-dev = {
-      description = "Consul client and server";
-
-      serviceConfig = {
-         ExecStart = "${whichPkg "consul"} agent --dev --ui";
-         Restart = "on-failure";
-      };
-
-      wantedBy = [ "multi-user.target" ];
-  };
 
   services.openssh.gatewayPorts = "yes";
   networking.wireguard.interfaces.wg0 = {
@@ -69,17 +63,17 @@ in
       ];
     }; 
 
-services.nginx = {
-    enable = true;
-    recommendedProxySettings = true;
-    recommendedTlsSettings = true;
-    # other Nginx options
-    virtualHosts."events.hs3.pl" =  {
-      locations."/" = {
-        proxyPass = "http://10.14.10.69:2137";# need to add localhost to loopback as it aint working
+  services.nginx = {
+      enable = true;
+      recommendedProxySettings = true;
+      recommendedTlsSettings = true;
+      # other Nginx options
+      virtualHosts."events.hs3.pl" =  {
+        locations."/" = {
+          proxyPass = "http://10.14.10.69:2137";# need to add localhost to loopback as it aint working
+        };
       };
-    };
-};
+  };
 
 
 

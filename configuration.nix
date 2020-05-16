@@ -89,6 +89,15 @@ in
       ];
   };
 
+
+  users.users.yasiu = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "docker" ];
+      openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCcXfaXRjluHWYW3xkX3hXK/dr/b1epoqnOz+2+AErxb2aNXUohLoYx80Jrz7mSDFIYYN4VVXqu07FckMNlIvcHRXueZ5VD33Rs3bzk4CQc77m0BrXIendzo/X3xmH0WoxZbDeWvKbY3QtCjM1SRODhvRjtlkId31NVF7yyQZCLKz8AvUwkgNF8MHlcZo8MQcZApWKE4TWRlbZUfBLciEdtiFu2TJrhGjuOU+T6qExoPxLWGB690FPpqQdk1tdA+ZRvj7R2+lVr5MzNTZe3GwJgWKAkgLGUKrZl814VS/cZjbSrxmDDh/bRV2gtchm51Gk0xYXRI+S50KZC9u3gR0yZQrxX68ONXtDafb5qZPKwueGNrlmxsQ0c5wSd3LQLQ8WqoJ7JXQJIV+f4JIlysJRnqj0kDgFkJgE7NvgOTUEpSi6t3q6mWNwqA7QxZpqkvXft2ZkzQnUfbOdfkECSWjwNuHPxN0qvGq2nzRL35nNnTf7AwqOQEWoluWtxPhihNKBYz3hj1pCv6xpG8ET/dTVeDe4cIYOKQyKbB9KcQ3aAB6m2ts9gXXfHWuC7qjs4y7nmVjRB6dMCTKjIQ0A6orSKc79g3pHDCuGnCepBc0lg8jF+3rJ/ME+YdGxr703+QUPNLsNjVjMXvrVqu7Lm/Amh01k5kLtbo374Q4fUGiTvYQ== contact@yasiu.pl"
+      ];
+
+
   systemd.services.consul-dev = {
       description = "Consul client and server";
 

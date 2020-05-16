@@ -1,0 +1,31 @@
+job "drone" {
+  datacenters = ["dc1"]
+  group "drone" {
+    count = 1
+    task "drone" {
+      driver = "docker"
+      env = {
+        DRONE_GITHUB_CLIENT_ID = "251773f6d318e6b0e41e"
+        DRONE_GITHUB_CLIENT_SECRET = "cda08b2357cd5670ef04939f46ba8e3b9faa2270"
+        DRONE_RPC_SECRET = "ee8e5ebda09219482b0d112d4e9074d9"
+        DRONE_SERVER_HOST = "ci.at.hs3.pl"
+        DRONE_SERVER_PROTO = "http"
+      }
+      config {
+        image = "drone/drone:1" 
+        port_map = {
+            http  = 80
+        }
+      }
+      resources {
+        cpu    = 2000
+        memory = 2000
+        network {
+            port "http" {
+                static = "6369"
+            }
+        }
+      }
+    }
+  }
+}

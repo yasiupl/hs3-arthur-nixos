@@ -12,6 +12,7 @@ in
       ./hardware-configuration.nix
       ./nomad.nix
       ./local.nix
+      ./ping-hotfix.nix
     ];
 
   boot.loader.grub.enable = true;
@@ -62,11 +63,29 @@ in
   };
 
 
+  users.users.matik = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "docker" ];
+      openssh.authorizedKeys.keys = [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAMX/R2Oh0hujOAt3lczvXKpf5YAcmaadA/aKozFuhXfI5RpTiIMF89fpNwok55Wi7uov8rV50Ib0fDKYeIjL8tGpetyFGE2BkIehxG/B1ZL5GvhTfJzCaAMVvw+tlzyko/96dRyaY0nEHUI6QJoAOf2KFcJ2DHC/Hkvk+6E1yOZy71QJjLKU5u0SCnZUxFIEOAYrNRdxXnQ/Y3vHvUtoBD2PD5hgXZzHoeY5L/AP+IGwKyoFtovLwJOZpizElPJTRUqnSRAzLX7UDtPJu6e7LYOpI1kUOeRYZJazC0sLHlfT4NaVFOySZl5sXqjMqkMJzQbvk+7T4hCs55RuxhuH5wsdnY7DBAv2Sl9vJhErAx80W4WO1FloUqsy1p+FbQ0vpvEGFwCoer6AzRJgOgWX1W/XNNN8ptoEpkmBs0oULnD+/G0QZnc4S1j+fJsw25GzhCENcVwFxdqBet9F31p4Nhn8+3DdLlT+GgETpTEKL1JpVJDDKnP+XLOjYAqpm1JNYGRbd6dR3aoef3piP0zDwRLPsa2VqPriOPPDcOgK41mFFpJsKaYox/ukb+mdLj7cfklKBz+Vi2XiKO/JyldlsgT+Z7+d90z8pizETxTH8cfK2NyZuv50LVXERKAMAOXuknY4A7J7D+zO9KbtHdH9nJppLwEVC+kVSXsYhnPdX0Q== matik@y"
+        ];
+  };
+
+
   users.users.critbit = {
       isNormalUser = true;
       extraGroups = [ "wheel" "docker" ];
       openssh.authorizedKeys.keys = [
           "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCebJpdjaPXKB2gscm6gvoVSLe+ci2Gd6xJiZpYy+37UkD9+wfJ46tXDRT7qNZnIGa20ySAt+vq+oWVe2RRtLo2hWYPieAfauawhhOVuXtjnN9cuJB3TtNcl7A8ZyvPwQbSxszdueXjUhYD/I5d082cx1eC4dzVM2pw33K2npUAlIXgM3WqBiMkgoL1eEnin7xlTIIu/7RaF4Thm2TNyGRQzRnWtXssgh0B9bd5FvPQ4Ywkbac9bR5gjUurPBP18Cy/oJGjrKs/JUALgxg9mD8F8U376b7Inxz3eKINtJZctEvzt2/Wz32PZORVGjNeGJ350BYXovi1zhqwO8gX1RZP vue95@Vue700"
+      ];
+  };
+
+
+  users.users.not7cd = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "docker" ];
+      openssh.authorizedKeys.keys = [
+      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjIi2qvirrTFSrXHrdHlbAqX7wCE2+0iXWFhs7jClw6RPgTbdLjTKjHGFYoA5OTBIDTSXHfRwmM0oLg7nYwY+VeJvHPlJwxx8INBzUYOL3Q0PgBZ1kcSMoZIQZubzBOvb7FMoRCggpzeQd2XGlp/sF2FkF3K3Vw9Zx5CTmtUoyWxpX5lOUg/ujaY4JP4HXTb4ehzItIv//DoTug3MMFEpqd2Ki7qWpkzdZb8YDri8rnfdjelgdl3RSUczraT369RlZKWuOLvR2BdNzZd48CJzJDRg/EIZXwJ8/luhgZlXeQBESfvccbdXdn/4sAa84DTz/+G6uANiN9fVY2m7bCaMFDiYPvB6xJfjfzIujW633Dh9gnTiDnxYWHIvOFKhvq7Ada4B+HELB7xZW7u1dQlHjoIDvbUA2uAQgJ4g64hhUFM5xr5fdInaZeGZratYSs9UDkyTYk46zYwCmL9K2fjLMcZQMIgjM5/V7cbKVm61hga+ID9j8AOCEcWgze15V2A+q7yFAmYd5VQswNgVyGW+ZHOf4HdgjzWtbztcQir54aNsRkn0JakANNH6a9fxdHOJ9IqGgPn9cvDpHnXKA1nIWJcRWeN3f4UZxeWA7bIHOE8LQD4YDDufDNMyd8OHKcsxlUIsTmjiMBZbwCl/06KVpG14iYLiqYqGIKbtFETnrrw== \"not7cd\""
       ];
   };
 
@@ -94,6 +113,17 @@ in
       ];
     }; 
 
+services.nginx = {
+    enable = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+    # other Nginx options
+    virtualHosts."events.hs3.pl" =  {
+      locations."/" = {
+        proxyPass = "http://10.14.10.69:2137";# need to add localhost to loopback as it aint working
+      };
+    };
+};
 
 
 

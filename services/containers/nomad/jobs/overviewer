@@ -1,0 +1,23 @@
+job "overviewer" {
+  datacenters = ["dc1"]
+  group "overviewer" {
+    count = 1
+    task "overviewer" {
+      driver = "docker"
+	config {
+		image = "mide/minecraft-overviewer:latest"
+		interactive = true
+		tty = true
+		volumes = ["/home/yasiu/papermc/:/home/minecraft/server/:ro", "/var/www/mc.yasiu.pl/mapa/:/home/minecraft/render/:rw"]
+	}
+	
+	env = {
+		MINECRAFT_VERSION = "1.15.2"
+	}
+	resources {
+		cpu    = 2000
+		memory = 2000
+	}
+    }
+  }
+}

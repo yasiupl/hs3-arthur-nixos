@@ -18,8 +18,7 @@ in
       ./services/systemd/ping-hotfix.nix
       # Users files 
       ./users/users.nix
-      ./nextcloud.nix	    
-];
+    ];
 
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
@@ -35,12 +34,6 @@ in
   # };
 
   virtualisation.docker.enable = true;
-
-
-  # ACME
-
-  security.acme.acceptTerms = true;
-  security.acme.email = "kontakt@hs3.pl";
 
   time.timeZone = "Europe/Warsaw";
 
@@ -84,11 +77,16 @@ in
         };
       };
       virtualHosts."mc.yasiu.pl" =  {
-        addSSL = true;
-        enableACME = true;
+#	forceSSL = true;
+#	enableACME = true;
+	root = "/home/yasiu/landing/";
+        locations."/".extraConfig = ''
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+        '';
 
-	root = "/var/www/mc.yasiu.pl/";
-      	locations."/discord".extraConfig = '' 
+	locations."/discord".extraConfig = '' 
                 return 301 https://discord.gg/EQNvQ6s;
         '';
 

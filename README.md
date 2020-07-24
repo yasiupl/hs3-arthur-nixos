@@ -21,7 +21,7 @@ It contains the nginx configuration, so check it out!!!
 Contains definitions of users.
 Add One here, do not use usermod @CringeBit xD
 
-### /services/containers/nomad/jobs
+### services/containers/nomad/jobs
 
 Contains definitions of nomad containers.
 **If you want to add some service then you should look here**
